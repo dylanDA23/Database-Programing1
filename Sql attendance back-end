@@ -1,0 +1,87 @@
+create database attendance;
+
+
+create table Course(course_code nvarchar(10) not null primary key, course_name varchar(20) unique , date_from date, date_too date);
+
+create table CourseSubjects(course_code nvarchar(10) not null, subject_code nvarchar(10) not null,
+primary key(course_code, subject_code),
+foreign key(course_code)references Course(course_code),
+foreign key(subject_code)references Subjects(subject_code));
+
+create table Faculty(faculty_name varchar(20) primary key not null);
+
+create table FacultyCourses(faculty_name varchar(20) not null, course_code nvarchar(10) not null,
+primary key(faculty_name, course_code),
+foreign key(faculty_name) references Faculty(faculty_name),
+foreign key(course_code)references Course(course_code));
+
+create table Groups(group_numb int primary key not null);
+
+create table Student(student_id int primary key not null, first_name varchar(20) not null, last_name varchar(20) not null, gender varchar(7) not null);
+
+create table StudentAdress(student_id int not null, student_erf int not null, street varchar(20) not null, suburb varchar(20) not null,
+primary key(student_id, student_erf),
+foreign key(student_id, student_erf)references StudentErf(student_id, student_erf));
+
+
+create table StudentEmail(student_id int not null, email_ad nvarchar(35) unique,
+primary key(student_id),
+foreign key(student_id)references Student(student_id));
+
+create table StudentEnrollment(student_id int not null, course_code nvarchar(10) not null,
+primary key(student_id, course_code),
+foreign key(student_id)references Student(student_id),
+foreign key(course_code)references Course(course_code));
+
+create table StudentErf(student_id int not null, student_erf int not null,
+primary key(student_id, student_erf),
+foreign key(student_id)references Student(student_id));
+
+create table StudentGroup(student_id int not null, group_numb int,
+primary key(student_id),
+foreign key(student_id) references Student(student_id),
+foreign key(group_numb) references Groups(group_numb));
+
+create table Groups(group_numb int primary key not null);
+
+create table StudentMobile(student_id int not null, mobile_tel_numb int unique,
+primary key(student_id),
+foreign key(student_id)references Student(student_id));
+
+create table StudentPostal(student_id int not null, postal_code int not null,
+primary key(student_id, postal_code),
+foreign key(student_id)references Student(student_id));
+
+create table StudentSubjects(student_id int not null, subject_code nvarchar(10) not null,
+primary key(student_id, subject_code),
+foreign key(student_id)references Student(student_id),
+foreign key(subject_code)references Subjects(subject_code));
+
+create table Subjects(subject_code  nvarchar(10) primary key not null, subject_name varchar(20) unique, duration time);
+
+create table Teacher(teacher_id int primary key not null, first_name varchar(20) not null, last_name varchar(20) not null, gender varchar(7) not null);
+
+create table TeacherAdress(teacher_id int not null, teacher_erf int not null, street varchar(20) not null, suburb varchar(20) not null,
+primary key(teacher_id, teacher_erf),
+foreign key(teacher_id, teacher_erf) references TeacherErf(teacher_id, teacher_erf));
+
+create table TeacherErf(teacher_id int not null, teacher_erf int not null,
+primary key(teacher_id, teacher_erf),
+foreign key(teacher_id)references Teacher(teacher_id));
+
+create table TeacherGroups(teacher_id int not null, group_numb int not null,
+primary key(teacher_id, group_numb),
+foreign key(teacher_id)references Teacher(teacher_id),
+foreign key(group_numb)references Groups(group_numb));
+
+create table TeacherMobile(teacher_id int not null, mobile_tel_numb int unique,
+primary key(teacher_id),
+foreign key(teacher_id)references Teacher(teacher_id));
+
+create table TeacherPostal(teacher_id int primary key not null, postal_code int,
+foreign key(teacher_id)references Teacher(teacher_id));
+
+create table TeacherSubjects(teacher_id int not null, subject_code nvarchar(10) not null,
+primary key(teacher_id, subject_code),
+foreign key(teacher_id)references Teacher(teacher_id),
+foreign key(subject_code)references Subjects(subject_code));
